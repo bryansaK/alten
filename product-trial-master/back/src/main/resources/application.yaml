@@ -1,3 +1,14 @@
 spring:
   application:
     name: alten
+  datasource:
+    url: jdbc:postgresql://localhost:5432/alten
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
