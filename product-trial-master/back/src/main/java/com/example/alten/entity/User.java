@@ -29,7 +29,7 @@ public class User implements UserDetails {
     @Column(name = "username", nullable = false, unique = true, length = 255)
     private String username;
 
-     @Column(name = "firstname", nullable = false, unique = true, length = 255)
+    @Column(name = "firstname", nullable = false, length = 255)
     private String firstName;
 
     @Column(name = "email", nullable = false, unique = true, length = 255)
@@ -66,6 +66,7 @@ public class User implements UserDetails {
         this.id = id;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
@@ -82,6 +83,7 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }

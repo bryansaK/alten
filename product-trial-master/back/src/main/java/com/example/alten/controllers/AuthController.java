@@ -18,6 +18,8 @@ import com.example.alten.entity.User;
 import com.example.alten.services.AuthService;
 import com.example.alten.services.JwtService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 public class AuthController {
 
@@ -64,7 +66,7 @@ public class AuthController {
             throw new UsernameNotFoundException("Invalid user request!");
         }
     }
-
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/welcome")
     public String welcome() {
         return "Welcome this endpoint is not secure";

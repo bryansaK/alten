@@ -3,6 +3,8 @@ package com.example.alten.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.alten.entity.User;
@@ -36,6 +38,23 @@ public class UserService {
         }
        User newUser = userRepository.save(user);
         return newUser;
+    }
+
+    /**
+     * Récupère l'utilisateur connecté à partir du JWT
+     * @return User connecté
+     * @throws RuntimeException si l'utilisateur n'est pas authentifié
+     */
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("No authenticated user found");
+        }
+        
+        // Récupère l'utilisateur depuis le principal
+        User user = (User) authentication.getPrincipal();
+        return user;
     }
 
 }
