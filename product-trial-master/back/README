@@ -1,5 +1,11 @@
 Lien utile
 
+//DEPENDENCIES
+spring boot securiry
+Flyway
+jsonwebtoken
+
+
 // SETUP du projet 
 https://www.baeldung.com/spring-boot-postgresql-docker
 
