@@ -1,21 +1,20 @@
 package com.example.alten.controllers;
 
-import com.ey.springboot3security.entity.AuthRequest;
-import com.ey.springboot3security.entity.UserInfo;
-import com.ey.springboot3security.service.JwtService;
-import com.ey.springboot3security.service.UserInfoService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.alten.dto.AuthResponseDTO;
-import com.example.alten.dto.UserDTO;
+import com.example.alten.dto.LoginRequest;
+import com.example.alten.dto.RegisterRequest;
+import com.example.alten.entity.User;
 import com.example.alten.services.AuthService;
 import com.example.alten.services.JwtService;
 
@@ -27,31 +26,41 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     public AuthController(AuthService authService,
-                          JwtService jwtService,
-                          AuthenticationManager authenticationManager) {
+            JwtService jwtService,
+            AuthenticationManager authenticationManager) {
         this.authService = authService;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/account")
-    public UserDTO createAccount(@RequestBody  userInfo) {
-        return authService.addUser(userInfo);
+    public ResponseEntity<?> createAccount(@RequestBody RegisterRequest user) {
+        try {
+            User createdUser = authService.registerUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT) 
+                    .body(e.getMessage());
+        }
     }
 
     @PostMapping("/token")
-    public AuthResponseDTO authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    public  ResponseEntity<?> authenticateAndGetToken(@RequestBody LoginRequest authRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                authRequest.getUsername(),
-                authRequest.getPassword()
-            )
+                new UsernamePasswordAuthenticationToken(
+                        authRequest.getEmail(),
+                        authRequest.getPassword()
+                )
         );
 
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
-        } else {
+            String token =  jwtService.generateToken(authRequest.getUsername());
+            User user = (User) authentication.getPrincipal();
+            AuthResponseDTO response = new AuthResponseDTO(token, user.getUsername(), user.getEmail(), user.getFirstname(), user.getRole());
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } else{
             throw new UsernameNotFoundException("Invalid user request!");
         }
     }

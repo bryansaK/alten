@@ -11,7 +11,7 @@ public class AuthResponseDTO {
     public AuthResponseDTO() {
     }
 
-    public AuthResponseDTO(String token, String username, String email, String role) {
+    public AuthResponseDTO(String token, String username, String email, String firstname, String role) {
         this.token = token;
         this.username = username;
         this.firstname = firstname;

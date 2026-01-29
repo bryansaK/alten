@@ -34,7 +34,8 @@ public class UserService {
         if (user.getRole() == null) {
             user.setRole("USER");
         }
-        return userRepository.save(user);
+       User newUser = userRepository.save(user);
+        return newUser;
     }
 
 }
