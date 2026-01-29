@@ -29,6 +29,9 @@ public class User implements UserDetails {
     @Column(name = "username", nullable = false, unique = true, length = 255)
     private String username;
 
+     @Column(name = "firstname", nullable = false, unique = true, length = 255)
+    private String firstName;
+
     @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
 

@@ -4,6 +4,7 @@ public class AuthResponseDTO {
     
     private String token;
     private String username;
+    private String firstname;
     private String email;
     private String role;
 
@@ -13,6 +14,7 @@ public class AuthResponseDTO {
     public AuthResponseDTO(String token, String username, String email, String role) {
         this.token = token;
         this.username = username;
+        this.firstname = firstname;
         this.email = email;
         this.role = role;
     }
@@ -49,13 +51,10 @@ public class AuthResponseDTO {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "AuthResponseDTO{" +
-                "token='" + token + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                '}';
+    public String getFirstname() {
+        return firstname;
+    }
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 }
