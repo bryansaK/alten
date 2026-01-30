@@ -58,7 +58,7 @@ public class AuthController {
         );
 
         if (authentication.isAuthenticated()) {
-            String token =  jwtService.generateToken(authRequest.getUsername());
+            String token =  jwtService.generateToken(authRequest.getEmail());
             User user = (User) authentication.getPrincipal();
             AuthResponseDTO response = new AuthResponseDTO(token, user.getUsername(), user.getEmail(), user.getFirstname(), user.getRole());
             return ResponseEntity.status(HttpStatus.OK).body(response);

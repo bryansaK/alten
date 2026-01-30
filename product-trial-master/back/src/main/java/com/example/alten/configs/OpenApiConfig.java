@@ -1,4 +1,4 @@
-package com.example.alten.config;
+package com.example.alten.configs;
 
 import org.springframework.context.annotation.Configuration;
 
