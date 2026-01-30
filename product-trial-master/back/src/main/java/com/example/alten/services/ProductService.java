@@ -28,7 +28,7 @@ public class ProductService {
     public Product updateProductById(Long id, ProductRequest request) {
         Optional<Product> existing = productRepository.findById(id);
         if (existing.isEmpty()) {
-            throw new IllegalArgumentException("Product not found with id: " + id);
+            throw new IllegalArgumentException("Produit introuvable avec l'id: " + id);
         }
         Product product = existing.get();
         request.applyTo(product);

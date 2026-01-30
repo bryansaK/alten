@@ -32,7 +32,7 @@ public class CartItemService {
     public CartItem addToCart(User user, CartItemRequest request) {
         Optional<Product> product = productRepository.findById(request.getProductId());
         if (product.isEmpty()) {
-            throw new IllegalArgumentException("Product not found with id: " + request.getProductId());
+            throw new IllegalArgumentException("Produit introuvable avec l'id: " + request.getProductId());
         }
 
         Optional<CartItem> existing = cartItemRepository.findByUserAndProductId(user, request.getProductId());
@@ -49,11 +49,11 @@ public class CartItemService {
     public CartItem updateCartItem(Long id, User user, CartItemRequest request) {
         Optional<CartItem> existing = cartItemRepository.findById(id);
         if (existing.isEmpty()) {
-            throw new IllegalArgumentException("Cart item not found with id: " + id);
+            throw new IllegalArgumentException("Item du panier introuvable avec l'id: " + id);
         }
         CartItem cartItem = existing.get();
         if (!cartItem.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("Cannot update another user's cart item");
+            throw new IllegalArgumentException("Impossible de modifier l'item d'un autre utilisateur");
         }
         request.applyTo(cartItem);
         return cartItemRepository.save(cartItem);
@@ -62,10 +62,10 @@ public class CartItemService {
     public void deleteCartItem(Long id, User user) {
         Optional<CartItem> existing = cartItemRepository.findById(id);
         if (existing.isEmpty()) {
-            throw new IllegalArgumentException("Cart item not found with id: " + id);
+            throw new IllegalArgumentException("Item du panier introuvable avec l'id: " + id);
         }
         if (!existing.get().getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("Cannot delete another user's cart item");
+            throw new IllegalArgumentException("Impossible de supprimer l'item d'un autre utilisateur");
         }
         cartItemRepository.deleteById(id);
     }

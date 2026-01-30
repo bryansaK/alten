@@ -25,13 +25,13 @@ public class UserService {
         if (user.isPresent()) {
             return user.get();
         } else {
-            throw new Exception("User not found with email: " + email);
+            throw new Exception("Utilisateur introuvable avec l'email: " + email);
         }
     }
 
     public User saveUser(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already in use: " + user.getEmail());
+            throw new IllegalArgumentException("Email déjà utilisé: " + user.getEmail());
         }
         if (user.getRole() == null) {
             user.setRole("USER");

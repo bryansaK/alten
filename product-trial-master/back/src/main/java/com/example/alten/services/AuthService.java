@@ -25,7 +25,7 @@ public class AuthService {
         User user = userService.findByEmail(request.getEmail());
 
         if (!encoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid credentials");
+            throw new BadCredentialsException("Identifiants invalides");
         }
 
         return user;

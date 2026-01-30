@@ -44,7 +44,7 @@ public class ProductController {
     @PostMapping("/new")
     public Product createProduct(@RequestBody ProductRequest product) {
         if (!userDetailsService.getCurrentUser().getEmail().equalsIgnoreCase(adminEmail)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admin users can create products");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seuls les administrateurs peuvent créer des produits");
         }
         return productService.saveProduct(product);
     }
@@ -52,7 +52,7 @@ public class ProductController {
     @PatchMapping("/update/{id}")
     public Product updateProduct(@PathVariable Long id, @RequestBody ProductRequest product) {
         if (!userDetailsService.getCurrentUser().getEmail().equalsIgnoreCase(adminEmail)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admin users can update products");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seuls les administrateurs peuvent modifier des produits");
         }
         return productService.updateProductById(id, product);
     }
@@ -60,7 +60,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         if (!userDetailsService.getCurrentUser().getEmail().equalsIgnoreCase(adminEmail)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admin users can delete products");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seuls les administrateurs peuvent supprimer des produits");
         }
         productService.deleteProductById(id);
     }
