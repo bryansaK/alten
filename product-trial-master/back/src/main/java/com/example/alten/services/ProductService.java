@@ -8,17 +8,15 @@ import org.springframework.stereotype.Service;
 
 import com.example.alten.dto.ProductRequest;
 import com.example.alten.entity.Product;
-import com.example.alten.repository.ProductReposiroty;
+import com.example.alten.repository.ProductRepository;
 
 @Service
 public class ProductService {
 
-    private final CustomUserDetailsService userDetailsService;
-    private final ProductReposiroty productRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public ProductService(CustomUserDetailsService userDetailsService, ProductReposiroty productRepository) {
-        this.userDetailsService = userDetailsService;
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
