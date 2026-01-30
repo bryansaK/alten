@@ -56,7 +56,6 @@ public class AuthController {
                         authRequest.getPassword()
                 )
         );
-
         if (authentication.isAuthenticated()) {
             String token =  jwtService.generateToken(authRequest.getEmail());
             User user = (User) authentication.getPrincipal();

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.example.alten.entity.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -66,10 +68,11 @@ public class JwtService {
             UserDetails userDetails,
             long expiration
     ) {
+        String subject = resolveSubject(userDetails);
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -78,7 +81,15 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        String subject = resolveSubject(userDetails);
+        return (username.equals(subject)) && !isTokenExpired(token);
+    }
+
+    private String resolveSubject(UserDetails userDetails) {
+        if (userDetails instanceof User) {
+            return ((User) userDetails).getEmail();
+        }
+        return userDetails.getUsername();
     }
 
     private boolean isTokenExpired(String token) {

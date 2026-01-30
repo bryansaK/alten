@@ -40,11 +40,6 @@ public class UserService {
         return newUser;
     }
 
-    /**
-     * Récupère l'utilisateur connecté à partir du JWT
-     * @return User connecté
-     * @throws RuntimeException si l'utilisateur n'est pas authentifié
-     */
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         

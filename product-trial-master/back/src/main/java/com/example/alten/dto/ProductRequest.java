@@ -1,92 +1,92 @@
 package com.example.alten.dto;
 
+import java.math.BigDecimal;
+
+import com.example.alten.entity.Product;
+
 public class ProductRequest {
-    
-    private Long id;
-    private Integer quantity;
-    private String internalReference;
-    private String code;
-    private String name;
-    private String image;
-    private Long shellId;
-    private String inventoryStatus;
-    
-    public ProductRequest() {}
-    
-    public ProductRequest(Long id, Integer quantity, String internalReference, String code, 
-                         String name, String image, Long shellId, String inventoryStatus) {
-        this.id = id;
-        this.quantity = quantity;
-        this.internalReference = internalReference;
-        this.code = code;
-        this.name = name;
-        this.image = image;
-        this.shellId = shellId;
-        this.inventoryStatus = inventoryStatus;
-    }
-    
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer getQuantity() {
-        return quantity;
-    }
-    
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-    
-    public String getInternalReference() {
-        return internalReference;
-    }
-    
-    public void setInternalReference(String internalReference) {
-        this.internalReference = internalReference;
-    }
-    
-    public String getCode() {
-        return code;
-    }
-    
-    public void setCode(String code) {
-        this.code = code;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getImage() {
-        return image;
-    }
-    
-    public void setImage(String image) {
-        this.image = image;
-    }
-    
-    public Long getShellId() {
-        return shellId;
-    }
-    
-    public void setShellId(Long shellId) {
-        this.shellId = shellId;
-    }
-    
-    public String getInventoryStatus() {
-        return inventoryStatus;
-    }
-    
-    public void setInventoryStatus(String inventoryStatus) {
-        this.inventoryStatus = inventoryStatus;
-    }
+
+	private String code;
+	private String name;
+	private BigDecimal price;
+	private Integer quantity;
+	private String inventoryStatus;
+
+	public ProductRequest() {}
+
+	public ProductRequest(String code, String name, BigDecimal price, Integer quantity, String inventoryStatus) {
+		this.code = code;
+		this.name = name;
+		this.price = price;
+		this.quantity = quantity;
+		this.inventoryStatus = inventoryStatus;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getInventoryStatus() {
+		return inventoryStatus;
+	}
+
+	public void setInventoryStatus(String inventoryStatus) {
+		this.inventoryStatus = inventoryStatus;
+	}
+
+	public Product toEntity() {
+		Product product = new Product();
+		product.setCode(code);
+		product.setName(name);
+		product.setPrice(price);
+		product.setQuantity(quantity != null ? quantity : 0);
+		product.setInventoryStatus(inventoryStatus != null ? inventoryStatus : "INSTOCK");
+		return product;
+	}
+
+	public void applyTo(Product product) {
+		if (code != null) {
+			product.setCode(code);
+		}
+		if (name != null) {
+			product.setName(name);
+		}
+		if (price != null) {
+			product.setPrice(price);
+		}
+		if (quantity != null) {
+			product.setQuantity(quantity);
+		}
+		if (inventoryStatus != null) {
+			product.setInventoryStatus(inventoryStatus);
+		}
+	}
 }
