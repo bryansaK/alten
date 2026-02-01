@@ -2,19 +2,16 @@ import { inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, BehaviorSubject } from "rxjs";
 import { tap } from "rxjs/operators";
-import { RegisterResponse } from "./register/register.component";
-
-export interface LoginResponse {
-  token: string;
-}
+import { LoginResponse, RegisterResponse, User } from "./auth.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly BASE_URL = "http://localhost:3000/api";
+  private readonly BASE_URL = "http://localhost:8080/api";
   private readonly TOKEN_KEY = "access_token"; // clé définie dans le intercertor.ts en gros il le get dedans
+  private readonly USER_KEY = "current_user";
 
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(
@@ -22,14 +19,37 @@ export class AuthService {
   );
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
+  private currentUserSubject = new BehaviorSubject<User | null>(
+    this.getStoredUser()
+  );
+  public currentUser$ = this.currentUserSubject.asObservable();
+
 
   private hasToken(): boolean {
     return !!localStorage.getItem(this.TOKEN_KEY);
   }
 
+  private getStoredUser(): User | null {
+    const stored = localStorage.getItem(this.USER_KEY);
+    return stored ? (JSON.parse(stored) as User) : null;
+  }
+
+  private setStoredUser(user: User | null): void {
+    if (user) {
+      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(this.USER_KEY);
+    }
+  }
+
 
   public getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  public setCurrentUser(user: User | null): void {
+    this.currentUserSubject.next(user);
+    this.setStoredUser(user);
   }
 
 
@@ -40,18 +60,29 @@ export class AuthService {
         tap((response) => {
           localStorage.setItem(this.TOKEN_KEY, response.token);
           this.isAuthenticatedSubject.next(true);
+          if (response.user) {
+            this.setCurrentUser(response.user);
+          }
         })
       );
   }
 
-    public register(email: string, password: string, firstName?: string, userName?: string): Observable<RegisterResponse> {
+    public register(email: string, password: string, firstname?: string, username?: string): Observable<RegisterResponse> {
     return this.http
-      .post<RegisterResponse>(this.BASE_URL + "/account", { email, password, firstName, userName });
+      .post<RegisterResponse>(this.BASE_URL + "/account", { email, password, firstname, username })
+      .pipe(
+        tap((response) => {
+          if (response.user) {
+            this.setCurrentUser(response.user);
+          }
+        })
+      );
   }
 
   public logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     this.isAuthenticatedSubject.next(false);
+    this.setCurrentUser(null);
   }
 
 

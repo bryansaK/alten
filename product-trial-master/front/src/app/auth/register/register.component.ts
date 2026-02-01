@@ -4,20 +4,16 @@ import { ButtonModule } from "primeng/button";
 import { FormsModule } from "@angular/forms";
 import { AuthService } from "../auth.service";
 import { Router } from "@angular/router";
+import { RegisterResponse } from "../auth.model";
 
 
 const emptyUser: Register = {
     password: "",
     email: "",
-    firstName: "",
-    userName: "",
+    firstname: "",
+    username: "",
 };
-export interface RegisterResponse {
-    message: string;
-}
-
 @Component({
-    providers: [AuthService],
   selector: "app-register",
   templateUrl: "./register.component.html",
     styleUrls: ["./register.component.scss"],
@@ -31,7 +27,7 @@ export class RegisterComponent {
 
     public onRegister() {
         if (this.registerData.email && this.registerData.password) {
-            this.authService.register(this.registerData.email, this.registerData.password, this.registerData.firstName, this.registerData.userName).subscribe({
+            this.authService.register(this.registerData.email, this.registerData.password, this.registerData.firstname, this.registerData.username).subscribe({
                 next: (response: RegisterResponse) => {
                     console.log("Register successful", response);
                     this.router.navigate(['/login']);

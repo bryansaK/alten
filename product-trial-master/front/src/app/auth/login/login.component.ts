@@ -28,7 +28,7 @@ export class LoginComponent {
         if (this.loginData.email && this.loginData.password) {
             this.authService.login(this.loginData.email, this.loginData.password).subscribe({
                 next: (response) => {
-                    console.log("Login successful", response);
+                    this.router.navigate(['/home']);
                 }
             });
         }

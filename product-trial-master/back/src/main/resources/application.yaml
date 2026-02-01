@@ -16,6 +16,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+server:
+  servlet:
+    context-path: /api
+
 security:
   jwt:
     secret-key: 962339c7f6ebf575f13b37930fcdc4adf2f9632796e48948b076e312198a7d57
