@@ -3,6 +3,9 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, BehaviorSubject } from "rxjs";
 import { tap } from "rxjs/operators";
 import { LoginResponse, RegisterResponse, User } from "./auth.model";
+import { Login } from './login/login.model';
+
+
 
 @Injectable({
   providedIn: "root",
@@ -57,11 +60,16 @@ export class AuthService {
     return this.http
       .post<LoginResponse>(this.BASE_URL + "/token", { email, password })
       .pipe(
-        tap((response) => {
+        tap((response: LoginResponse) => {
           localStorage.setItem(this.TOKEN_KEY, response.token);
           this.isAuthenticatedSubject.next(true);
-          if (response.user) {
-            this.setCurrentUser(response.user);
+          if (response) {
+            console.log('Login response:', response);
+            this.setCurrentUser({
+              email: response.email,
+              firstname: response.fisrtname,
+              username: response.username
+            });
           }
         })
       );

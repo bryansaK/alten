@@ -1,8 +1,8 @@
 export interface User {
   id?: number | string;
   email?: string;
-  firstName?: string;
-  userName?: string;
+  firstname?: string;
+  username?: string;
 }
 
 export interface RegisterResponse {
@@ -12,5 +12,8 @@ export interface RegisterResponse {
 
 export interface LoginResponse {
   token: string;
-  user?: User;
+  username?: string;
+  email?: string;
+  fisrtname?: string;
+  role?: string;
 }

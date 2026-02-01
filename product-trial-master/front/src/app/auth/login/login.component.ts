@@ -12,7 +12,6 @@ const emptyUser: Login = {
 };
 
 @Component({
-    providers: [AuthService],
   selector: "app-login",
   templateUrl: "./login.component.html",
     styleUrls: ["./login.component.scss"],
@@ -21,8 +20,8 @@ const emptyUser: Login = {
 })
 export class LoginComponent {
     router: Router = inject(Router);
+    private authService = inject(AuthService);
     public loginData: Login = emptyUser;
-    constructor(private authService: AuthService) {}
 
     public onLogin() {
         if (this.loginData.email && this.loginData.password) {

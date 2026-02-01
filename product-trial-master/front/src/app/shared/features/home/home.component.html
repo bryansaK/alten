@@ -1,5 +1,33 @@
 <p-card header="Bienvenue" class="block m-2 text-center">
   <p class="m-0">
-      Bienvenue sur {{ appTitle }} !
+      Bienvenue {{ (currentUser | async)?.username }} !
   </p>
 </p-card>
+
+<div class="m-2">
+  <p-card header="Ma Wishlist">
+    <div *ngIf="wishList.length === 0" class="text-center p-4">
+      <p class="text-lg">Votre wishlist est vide</p>
+      <p class="text-gray-600">Ajoutez des produits dans l'onglet produits pour alimenter votre liste</p>
+      <a routerLink="/products/list" class="mt-3">
+        <p-button label="Voir les produits" icon="pi pi-shopping-cart"></p-button>
+      </a>
+    </div>
+
+    <div *ngIf="wishList.length > 0" class="grid">
+      <div *ngFor="let item of wishList" class="col-12 md:col-6 lg:col-4">
+        <p-card [header]="item.product.name">
+          <img [src]="item.product.image" [alt]="item.product.name" class="w-full" style="max-height: 200px; object-fit: cover;">
+          <p class="mt-2">{{ item.product.description }}</p>
+          <div class="flex justify-content-between align-items-center mt-3">
+            <span class="text-2xl font-bold">{{ item.product.price }} €</span>
+            <span class="text-sm text-gray-600">{{ item.product.category }}</span>
+          </div>
+          <div class="mt-2">
+            <span class="text-sm">Stock: {{ item.product.quantity }}</span>
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </p-card>
+</div>

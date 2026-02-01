@@ -2,6 +2,7 @@ import { enableProdMode, importProvidersFrom } from "@angular/core";
 
 import { registerLocaleData } from "@angular/common";
 import {
+  HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
 } from "@angular/common/http";
@@ -13,6 +14,7 @@ import { APP_ROUTES } from "app/app.routes";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { DialogService } from "primeng/dynamicdialog";
 import { AppComponent } from "./app/app.component";
+import { JwtInterceptor } from "./app/auth/jwt/interceptor";
 import { environment } from "./environments/environment";
 
 if (environment.production) {
@@ -25,6 +27,11 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(
       withInterceptorsFromDi(),
     ),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
     provideAnimations(),
     provideRouter(APP_ROUTES),
     ConfirmationService,
