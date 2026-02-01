@@ -6,6 +6,9 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
+import { AuthService } from './../../../auth/auth.service';
+import { CustomService } from '../../../shared/features/custom.service';
+import { Wishlist } from '../../../shared/features/home/customInterface';
 
 const emptyProduct: Product = {
   id: 0,
@@ -32,16 +35,48 @@ const emptyProduct: Product = {
   imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent],
 })
 export class ProductListComponent implements OnInit {
+  private readonly authService = inject(AuthService);
   private readonly productsService = inject(ProductsService);
+  private readonly customService = inject(CustomService);
 
+  public readonly currentUser = signal<any>(null); // signal c comme les useref
   public readonly products = this.productsService.products;
+  public wishList: Wishlist[] = [];
 
   public isDialogVisible = false;
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
 
   ngOnInit() {
+    this.authService.currentUser.subscribe((user: any) => {
+      if (user) {
+        this.currentUser.set(user);
+      }
+    });
     this.productsService.get().subscribe();
+    this.loadWishlist();
+  }
+
+  private loadWishlist(): void {
+    this.customService.getUserWishList().subscribe(wishList => {
+      this.wishList = wishList;
+    });
+  }
+
+  public isInWishlist(productId: number): boolean {
+    return this.wishList.some(item => item.product.id === productId);
+  }
+
+  public toggleWishlist(product: Product): void {
+    if (this.isInWishlist(product.id)) {
+      this.customService.removeFromWishlist(product.id).subscribe(() => {
+        this.loadWishlist();
+      });
+    } else {
+      this.customService.addToWishlist(product.id).subscribe(() => {
+        this.loadWishlist();
+      });
+    }
   }
 
   public onCreate() {

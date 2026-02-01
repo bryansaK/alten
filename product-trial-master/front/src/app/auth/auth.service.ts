@@ -25,7 +25,7 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(
     this.getStoredUser()
   );
-  public currentUser$ = this.currentUserSubject.asObservable();
+  public currentUser = this.currentUserSubject.asObservable();
 
 
   private hasToken(): boolean {

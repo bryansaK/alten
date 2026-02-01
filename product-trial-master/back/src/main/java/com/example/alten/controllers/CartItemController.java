@@ -37,9 +37,13 @@ public class CartItemController {
         return cartItemService.findByUser(user);
     }
 
-    @PostMapping("/add")
-    public CartItem addToCart(@RequestBody CartItemRequest request) {
+    @PostMapping("/{productId}")
+    public CartItem addToCart(@PathVariable Long productId, @RequestBody(required = false) CartItemRequest request) {
         User user = userDetailsService.getCurrentUser();
+        if (request == null) {
+            request = new CartItemRequest();
+        }
+        request.setProductId(productId);
         return cartItemService.addToCart(user, request);
     }
 

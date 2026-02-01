@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,9 +35,11 @@ public class WishlistItemController {
         return wishlistItemService.findByUser(user);
     }
 
-    @PostMapping("/add")
-    public WishlistItem addToWishlist(@RequestBody WishlistItemRequest request) {
+    @PostMapping("/{productId}")
+    public WishlistItem addToWishlist(@PathVariable Long productId) {
         User user = userDetailsService.getCurrentUser();
+        WishlistItemRequest request = new WishlistItemRequest();
+        request.setProductId(productId);
         return wishlistItemService.addToWishlist(user, request);
     }
 

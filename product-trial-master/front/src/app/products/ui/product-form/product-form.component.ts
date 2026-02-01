@@ -88,6 +88,7 @@ export class ProductFormComponent {
     { value: "Electronics", label: "Electronics" },
   ];
 
+
   onCancel() {
     this.cancel.emit();
   }

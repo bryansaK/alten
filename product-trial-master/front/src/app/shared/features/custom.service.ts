@@ -16,5 +16,12 @@ export class CustomService {
         return this.http.get<Wishlist[]>(`${this.BASE_URL}/wishlist`);
     }
 
+    public addToWishlist(productId: number): Observable<any> {
+        return this.http.post(`${this.BASE_URL}/wishlist/${productId}`, {});
+    }
+
+    public removeFromWishlist(productId: number): Observable<any> {
+        return this.http.delete(`${this.BASE_URL}/wishlist/${productId}`);
+    }
 
 }

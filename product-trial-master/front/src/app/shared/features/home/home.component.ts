@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly customService = inject(CustomService);
   
-  public currentUser = this.authService.currentUser$;
+  public currentUser = this.authService.currentUser;
   public wishList: Wishlist[] = [];
   public readonly appTitle = "ALTEN SHOP";
 
