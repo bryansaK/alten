@@ -1,0 +1,4 @@
+<h1>Login</h1>
+<input type="email" placeholder="Email" [(ngModel)]="loginData.email" class="block mb-2 p-inputtext p-component w-full" />
+<input type="password" placeholder="Password" [(ngModel)]="loginData.password" class="block mb-4 p-inputtext p-component w-full" />
+<p-button label="Login" (onClick)="onLogin()" class="w-full" />
