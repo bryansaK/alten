@@ -1,7 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { Login } from "./login.model";
 import { ButtonModule } from "primeng/button";
 import { FormsModule } from "@angular/forms";
+import { AuthService } from "../auth.service";
+import { Router } from "@angular/router";
 
 
 const emptyUser: Login = {
@@ -10,6 +12,7 @@ const emptyUser: Login = {
 };
 
 @Component({
+    providers: [AuthService],
   selector: "app-login",
   templateUrl: "./login.component.html",
     styleUrls: ["./login.component.scss"],
@@ -17,9 +20,21 @@ const emptyUser: Login = {
     imports: [ButtonModule, FormsModule],
 })
 export class LoginComponent {
+    router: Router = inject(Router);
     public loginData: Login = emptyUser;
+    constructor(private authService: AuthService) {}
 
     public onLogin() {
-        console.log("Login data:", this.loginData);
+        if (this.loginData.email && this.loginData.password) {
+            this.authService.login(this.loginData.email, this.loginData.password).subscribe({
+                next: (response) => {
+                    console.log("Login successful", response);
+                }
+            });
+        }
+    }
+
+    public toRegister() {
+        this.router.navigate(['/register']);
     }
 }

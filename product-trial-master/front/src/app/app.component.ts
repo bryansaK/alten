@@ -20,7 +20,7 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
   standalone: true,
-  imports: [RouterModule, SplitterModule, ToolbarModule, PanelMenuComponent, JwtInterceptor],
+  imports: [RouterModule, SplitterModule, ToolbarModule, PanelMenuComponent],
 })
 export class AppComponent {
   title = "ALTEN SHOP";
