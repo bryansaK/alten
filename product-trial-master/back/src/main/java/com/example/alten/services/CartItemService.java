@@ -34,17 +34,16 @@ public class CartItemService {
         if (product.isEmpty()) {
             throw new IllegalArgumentException("Produit introuvable avec l'id: " + request.getProductId());
         }
-
         Optional<CartItem> existing = cartItemRepository.findByUserAndProductId(user, request.getProductId());
         if (existing.isPresent()) {
-            CartItem cartItem = existing.get();
-            cartItem.setQuantity(request.getQuantity());
-            return cartItemRepository.save(cartItem);
+             throw new IllegalArgumentException("deja la");
         }
 
         CartItem cartItem = request.toEntity(user, product.get());
         return cartItemRepository.save(cartItem);
     }
+
+    
 
     public CartItem updateCartItem(Long id, User user, CartItemRequest request) {
         Optional<CartItem> existing = cartItemRepository.findById(id);

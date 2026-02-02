@@ -14,3 +14,6 @@ https://www.baeldung.com/spring-boot-postgresql-docker
 //PARTIE AUTH
 https://medium.com/@tericcabrel/implement-jwt-authentication-in-a-spring-boot-3-application-5839e4fd8fac
 https://www.geeksforgeeks.org/springboot/spring-boot-3-0-jwt-authentication-with-spring-security-using-mysql-database/
+
+//TODO
+améliorer les verifications genre emails et les retours d'api

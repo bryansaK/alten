@@ -2,3 +2,75 @@
     overflow: hidden;
     height: 100%;
 }
+
+.cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.cart-modal {
+    background: #fff;
+    width: min(700px, 90vw);
+    max-height: 80vh;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-items {
+    padding: 16px 20px;
+    overflow: auto;
+}
+
+.cart-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-name {
+    font-weight: 600;
+}
+
+.cart-item-desc {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.cart-item-price {
+    margin-top: 6px;
+    font-weight: 700;
+}
+
+.cart-empty {
+    padding: 24px 20px;
+    text-align: center;
+    color: #666;
+}

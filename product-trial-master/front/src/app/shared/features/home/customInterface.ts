@@ -28,3 +28,10 @@ export interface Wishlist {
   product: Product;
   createdAt: string;
 }
+
+export interface CartItem {
+  id: number;
+  user: User;
+  product: Product;
+  createdAt: string;
+}

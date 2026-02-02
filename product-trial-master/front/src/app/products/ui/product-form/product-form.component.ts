@@ -2,12 +2,14 @@ import {
   Component,
   computed,
   EventEmitter,
+  inject,
   input,
   Output,
   ViewEncapsulation,
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Product } from "app/products/data-access/product.model";
+import { ProductsService } from "app/products/data-access/products.service";
 import { SelectItem } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { DropdownModule } from "primeng/dropdown";
@@ -64,7 +66,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
   styleUrls: ["./product-form.component.scss"],
   standalone: true,
   imports: [
-    FormsModule,
+  FormsModule,
     ButtonModule,
     InputTextModule,
     InputNumberModule,
@@ -75,7 +77,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 })
 export class ProductFormComponent {
   public readonly product = input.required<Product>();
-
+  public readonly listProducts = inject(ProductsService);
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<Product>();
 
@@ -94,6 +96,7 @@ export class ProductFormComponent {
   }
 
   onSave() {
+    this.listProducts.get();
     this.save.emit(this.editedProduct());
   }
 }

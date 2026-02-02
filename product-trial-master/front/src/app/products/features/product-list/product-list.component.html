@@ -26,6 +26,12 @@
                             (onClick)="toggleWishlist(product)"
                             [label]="isInWishlist(product.id) ? 'Dans la wishlist' : 'Ajouter à la wishlist'"
                         />
+                        <p-button 
+                            [icon]="isInCart(product.id) ? 'pi pi-shopping-cart' : 'pi pi-shopping-bag'" 
+                            [severity]="isInCart(product.id) ? 'success' : 'info'" 
+                            (onClick)="toggleCart(product)"
+                            [label]="isInCart(product.id) ? 'Dans le panier' : 'Ajouter au panier'"
+                        />
                     </div>
                 </ng-template>
             </p-card>

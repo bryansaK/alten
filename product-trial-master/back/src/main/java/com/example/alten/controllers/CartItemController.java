@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/cart")
 public class CartItemController {
+
     private final CartItemService cartItemService;
     private final CustomUserDetailsService userDetailsService;
 
@@ -30,7 +31,7 @@ public class CartItemController {
         this.cartItemService = cartItemService;
         this.userDetailsService = userDetailsService;
     }
-    
+
     @GetMapping
     public List<CartItem> getCart() {
         User user = userDetailsService.getCurrentUser();
@@ -38,12 +39,11 @@ public class CartItemController {
     }
 
     @PostMapping("/{productId}")
-    public CartItem addToCart(@PathVariable Long productId, @RequestBody(required = false) CartItemRequest request) {
+    public CartItem addToCart(@PathVariable Long productId) {
         User user = userDetailsService.getCurrentUser();
-        if (request == null) {
-            request = new CartItemRequest();
-        }
+        CartItemRequest request = new CartItemRequest();
         request.setProductId(productId);
+        request.setQuantity(1); // Default quantity
         return cartItemService.addToCart(user, request);
     }
 
