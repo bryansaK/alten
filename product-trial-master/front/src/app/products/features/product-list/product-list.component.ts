@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, effect } from "@angular/core";
+import { Component, OnInit, inject, signal } from "@angular/core";
 import { Product } from "app/products/data-access/product.model";
 import { ProductsService } from "app/products/data-access/products.service";
 import { ProductFormComponent } from "app/products/ui/product-form/product-form.component";
@@ -49,15 +49,6 @@ export class ProductListComponent implements OnInit {
   public isDialogVisible = false;
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
-
-  constructor() {
-    effect(() => {
-      const wishlist = this.wishList();
-      const cartItems = this.CartItems();
-      console.log('Wishlist changed:', wishlist);
-      console.log('Cart changed:', cartItems);
-    });
-  }
 
   ngOnInit() {
     this.authService.currentUser.subscribe((user: any) => {

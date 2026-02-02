@@ -1,10 +1,18 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/internal/Observable";
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { inject, Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { Observable, throwError } from "rxjs";
+import { catchError } from "rxjs/operators";
+import { MessageService } from "primeng/api";
+import { AuthService } from "../auth.service";
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor 
 {
+  private readonly router = inject(Router);
+  private readonly messageService = inject(MessageService);
+  private readonly authService = inject(AuthService);
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> 
   {
     let token = localStorage.getItem('access_token');
@@ -15,6 +23,20 @@ export class JwtInterceptor implements HttpInterceptor
         }
       });
     }
-    return next.handle(request);
+    
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this.authService.logout();
+          this.router.navigate(['/login']);
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Session expirée',
+            detail: 'Veuillez vous reconnecter'
+          });
+        }
+        return throwError(() => error);
+      })
+    );
   }
  }

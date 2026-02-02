@@ -11,6 +11,7 @@ import { MessageService } from 'primeng/api';
 import { PanelMenuComponent } from "./shared/ui/panel-menu/panel-menu.component";
 import { CustomService } from "./shared/features/custom.service";
 import { CartItem } from "./shared/features/home/customInterface";
+import { AuthService } from "./auth/auth.service";
 
 @Component({
   selector: "app-root",
@@ -29,6 +30,8 @@ import { CartItem } from "./shared/features/home/customInterface";
 })
 export class AppComponent {
   title = "ALTEN SHOP";
+  private readonly authService = inject(AuthService);
+ currentUser = this.authService.currentUser;
   private readonly customService = inject(CustomService);
   private readonly messageService = inject(MessageService);
   cartItems: CartItem[] = [];
@@ -42,7 +45,9 @@ export class AppComponent {
   }
 
   openCartPopup(): void {
+    if (this.authService.isAuthenticated()) {
     this.isCartOpen = true;
+    }
   }
 
   closeCartPopup(): void {
