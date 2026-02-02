@@ -99,10 +99,12 @@ export class ProductListComponent implements OnInit {
       console.log('Removing from wishlist:', product.id);
       this.customService.removeFromWishlist(this.findRightWishlistItem(product.id)).subscribe(() => {
         this.loadWishlist();
+        this.messageService.add({severity:'success', summary: 'Succès', detail: 'Produit retiré de la liste de souhaits'});
       });
     } else {
       this.customService.addToWishlist(product.id).subscribe(() => {
         this.loadWishlist();
+        this.messageService.add({severity:'success', summary: 'Succès', detail: 'Produit ajouté à la liste de souhaits'});
       });
     }
   }
@@ -123,6 +125,7 @@ export class ProductListComponent implements OnInit {
     if (this.isInCart(product.id)) {
       this.customService.removeFromCart(this.findRightCartItem(product.id)).subscribe(() => {
         this.loadCart();
+        this.messageService.add({severity:'success', summary: 'Succès', detail: 'Produit retiré du panier'});
       });
     } else {
       this.customService.addToCart(product.id).subscribe(() => {
